@@ -1,0 +1,61 @@
+---
+title: "task-1 shreya"
+output:
+  html_document: default
+  word_document: default
+---
+
+```{r }
+knitr::opts_chunk$set(echo = TRUE)
+#Importing the dataset 
+Da<- read.csv(url("https://raw.githubusercontent.com/AdiPersonalWorks/Random/master/student_scores%20-%20student_scores.csv"))
+names(Da)
+#viewing structure of the dataset
+str(Da)
+#viewing top 10 rows of the data
+head(Da,10)
+#summary of data
+summary(Da)
+#BOX PLOT
+par(mfrow=c(1, 2))  # divide graph area in 2 columns
+boxplot(Da$Hours, main="Hours", sub=paste("Outlier rows: ", boxplot.stats(Da$Hours)$out))  # box plot for 'HOURS'
+boxplot(cars$dist, main="Scores", sub=paste("Outlier rows: ", boxplot.stats(Da$Scores)$out))  # box plot for 'Scores'
+# using lm function to fit the model to predict Scores of student on basis of number of hours they studied
+attach(Da)
+lm.fit=lm(Scores∼Hours , data=Da)
+
+lm.fit=lm(Scores∼Hours )
+lm.fit
+#getting the summary of the model
+summary(lm.fit)
+coef(lm.fit)
+#In order to obtain a confidence interval for the coefficient estimates, we can use the confint() command.
+confint (lm.fit)
+#predict function is used to calculate Scores for student who studies for 9.25 hours
+p <-  as.data.frame(9.25)
+colnames(p) <- "Hours"
+predict(lm.fit, newdata = p)
+#plot for the model is seen
+plot(Hours ,Scores)
+#abline function is used to show a red colour line
+abline(lm.fit)
+abline (lm.fit ,lwd =3)
+abline (lm.fit ,lwd=3,col ="red")
+plot(Hours ,Scores ,col="red")
+plot(Hours ,Scores ,pch =20)
+#using + symbols
+plot(Hours ,Scores ,pch ="+")
+plot(1:20,1:20,pch =1:20)
+#using the par() function, which tells R to split the par() display screen into separate panels so that multiple plots can be viewed si-multaneously. For example, par(mfrow=c(2,2)) divides the plotting region into a 2 × 2 grid of panels.
+par(mfrow=c(2,2))
+plot(lm.fit)
+#Alternatively, we can compute the residuals from a linear regression fit using the residuals() function. The function rstudent() will return the residuals() rstudent() studentized residuals, and we can use this function to plot the residuals against the fitted values.
+plot(predict (lm.fit), residuals (lm.fit))
+plot(predict (lm.fit), rstudent (lm.fit))
+#Leverage statistics can be computed for any number of predictors using the hatvalues() function.
+plot(hatvalues (lm.fit))
+#The which.max() function identifies the index of the largest element of a vector
+which.max(hatvalues (lm.fit))
+
+
+```
